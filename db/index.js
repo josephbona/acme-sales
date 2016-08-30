@@ -46,12 +46,13 @@ var SalesPerson = db.define('salesPerson', {
         throw err;
       });
     }
-  },
-  instanceMethods: {
-    hasRegion: function(regionID) {
-
-    }
   }
+  // instanceMethods: {
+  //   hasRegion: function(regionID) {
+  //     var assigned = false;
+  //     this.
+  //   }
+  // }
 });
 
 var SalesPersonRegion = db.define('salesPersonRegion', {});
