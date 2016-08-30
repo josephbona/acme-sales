@@ -1,0 +1,39 @@
+{% extends './layout.html' %}}
+{% block content %}
+  <div class="well">
+    <form class="form-horizontal" action="/salesPeople" method="POST">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="name">Name:</label>
+        <div class="col-sm-7">
+          <input class="form-control" id="name" type="text" name="name" placeholder="Type the dude's name here...">
+        </div>
+        <div class="col-sm-3">
+          <button class="btn btn-primary btn-block" type="submit">Add Sales Person</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  {% for _salesPerson in salesPeople %}
+  <div class="panel panel-default">
+    <div class="panel-heading clearfix">
+      <h3 class="panel-title">{{ _salesPerson.name }}</h3>
+      <form action="/salesPeople/{{ _salesPerson.id }}?_method=DELETE" method="POST">
+        <button class="btn btn-danger" type="submit">Delete</button>
+      </form>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for _region in regions %}
+        <!-- @TODO: check if salesPerson hasRegion -->
+        <li class="list-group-item clearfix">
+          {{ _region.zipcode }}
+          <form action="/salesPersonRegions/{{ _salesPerson.id }}/{{ _region.id }}?&backUrl=salesPeople" method="POST">
+            <button class="btn btn-default btn-sm" type="submit">Add</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endfor %}
+{% endblock %}
