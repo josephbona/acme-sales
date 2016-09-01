@@ -24,12 +24,17 @@
     <div class="panel-body">
       <ul class="list-group">
         {% for _salesPerson in salesPeople %}
-        <!-- @TODO: check if region hasSalesPerson -->
-        <li class="list-group-item clearfix">
+        <li class="list-group-item {% if _region.hasSalesPerson(_salesPerson.id) %} list-group-item-success {% endif %} clearfix">
           {{ _salesPerson.name }}
-          <form action="/salesPersonRegions/{{ _salesPerson.id }}/{{ _region.id }}?&backUrl=regions" method="POST">
-            <button class="btn btn-default btn-sm" type="submit">Add</button>
-          </form>
+          {% if _region.hasSalesPerson(_salesPerson.id) %}
+            <form action="/salesPersonRegions/{{ _salesPerson.id }}/{{ _region.id }}?&backUrl=regions&_method=DELETE" method="POST">
+              <button class="btn btn-danger btn-sm" type="submit">Remove</button>
+            </form>
+          {% else %}
+            <form action="/salesPersonRegions/{{ _salesPerson.id }}/{{ _region.id }}?&backUrl=regions" method="POST">
+              <button class="btn btn-default btn-sm" type="submit">Add</button>
+            </form>
+          {% endif %}
         </li>
         {% endfor %}
       </ul>

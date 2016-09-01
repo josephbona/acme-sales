@@ -12,7 +12,9 @@ var Region = db.define('region', {
     getRegionsViewModel: function() {
       return Promise.all([
         SalesPerson.findAll(),
-        Region.findAll()
+        Region.findAll({
+          include: [SalesPersonRegion]
+        })
       ]).spread(function(salesPeople, regions) {
         return {
           title: 'Regions',
@@ -25,6 +27,17 @@ var Region = db.define('region', {
       });
     }
   },
+  instanceMethods: {
+    hasSalesPerson: function(salesPersonId) {
+      var assigned = false;
+      for (var i = 0; i < this.salesPersonRegions.length; i++) {
+        if (this.salesPersonRegions[i].salesPersonId === salesPersonId) {
+          assigned = true;
+        }
+      }
+      return assigned;
+    }
+  }
 });
 
 var SalesPerson = db.define('salesPerson', {
@@ -33,7 +46,9 @@ var SalesPerson = db.define('salesPerson', {
   classMethods: {
     getSalesPersonViewModel: function() {
       return Promise.all([
-        SalesPerson.findAll(),
+        SalesPerson.findAll({
+          include: [SalesPersonRegion]
+        }),
         Region.findAll()
       ]).spread(function(salesPeople, regions) {
         return {
@@ -46,13 +61,18 @@ var SalesPerson = db.define('salesPerson', {
         throw err;
       });
     }
+  },
+  instanceMethods: {
+    hasRegion: function(regionId) {
+      var assigned = false;
+      for (var i = 0; i < this.salesPersonRegions.length; i++) {
+        if (this.salesPersonRegions[i].regionId === regionId) {
+          assigned = true;
+        }
+      }
+      return assigned;
+    }
   }
-  // instanceMethods: {
-  //   hasRegion: function(regionID) {
-  //     var assigned = false;
-  //     this.
-  //   }
-  // }
 });
 
 var SalesPersonRegion = db.define('salesPersonRegion', {});

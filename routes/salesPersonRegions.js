@@ -18,8 +18,10 @@ router.post('/:salesPersonId/:regionId', function(req, res, next) {
 
 router.delete('/:salesPersonId/:regionId', function(req, res, next) {
   SalesPersonRegion.destroy({
-    salesPersonId: req.params.salesPersonId,
-    regionId: req.params.regionId
+    where: {
+      salesPersonId: req.params.salesPersonId,
+      regionId: req.params.regionId
+    }
   }).then(function() {
     res.redirect('/' + req.query.backUrl);
   }).catch(next);
